@@ -8,6 +8,7 @@ import Docker.Types exposing (..)
 import Components.Networks as Networks
 import String exposing (..)
 import List exposing (..)
+import List.Extra exposing (..)
 
 statusString : String -> String -> String
 statusString state desiredState =
@@ -33,11 +34,15 @@ task service { status, desiredState, containerSpec, slot } =
 
                 Nothing ->
                     ""
-                    
-        currentImage = 
+
+        currentImageUrl = 
             case List.head (split "@" service.containerSpec.image) of
                 Just s -> s
+                Nothing -> ""
 
+        currentImage = 
+            case List.Extra.last (split "/" currentImageUrl) of
+                Just s -> s
                 Nothing -> ""
     in
         li [ classList classes ]
