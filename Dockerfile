@@ -16,14 +16,14 @@ RUN yarn install --production
 FROM node:6-slim AS elm-build
 WORKDIR /home/node/app
 
-RUN npm install -g elm --silent
+RUN npm install -g elm@0.18.0 --silent
 
 COPY elm-package.json ./
-RUN elm package install -y
+# RUN elm package install -y
 
 COPY . .
 
-RUN elm make Main.elm --output=client/index.js
+# RUN elm make Main.elm --output=client/index.js
 
 FROM base AS release
 

@@ -6,7 +6,8 @@ import Html.Attributes exposing (..)
 import Util exposing (..)
 import Docker.Types exposing (..)
 import Components.Networks as Networks
-
+import String exposing (..)
+import List exposing (..)
 
 statusString : String -> String -> String
 statusString state desiredState =
@@ -32,9 +33,17 @@ task service { status, desiredState, containerSpec, slot } =
 
                 Nothing ->
                     ""
+                    
+        currentImage = 
+            case List.head (split "@" service.containerSpec.image) of
+                Just s -> s
+
+                Nothing -> ""
     in
         li [ classList classes ]
             [ text (service.name ++ slotLabel slot)
+            , br [] []
+            , text (currentImage)
             , br [] []
             , text (statusString status.state desiredState)
             ]
